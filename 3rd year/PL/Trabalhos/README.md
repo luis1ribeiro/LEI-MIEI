@@ -1,4 +1,4 @@
-# Computação Gráfica
+# Processamento de Linguagens
 
 Trabalho realizado pelos elementos:
 

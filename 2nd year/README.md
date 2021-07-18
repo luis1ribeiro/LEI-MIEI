@@ -6,14 +6,10 @@
 
 ---
 
-* [Sistemas Operativos](https://github.com/luis1ribeiro/LRI-MIEI/tree/main/2nd)
+* [Sistemas Operativos](https://github.com/luis1ribeiro/LEI-MIEI/tree/main/2nd%20year/SO)
 
-* Comunicações por Computador
+* [Processamento Orientada aos Objetos](https://github.com/luis1ribeiro/LEI-MIEI/tree/main/2nd%20year/POO)
 
-* [Processamento Orientada aos Objetos](https://github.com/Demorales1998/3-ano/tree/main/2%C2%BAsemestre/PL)
+* [LI3](https://github.com/luis1ribeiro/LEI-MIEI/tree/main/2nd%20year/LI3)
 
-* Eletromagnetismo
-
-* [LI3](https://github.com/Demorales1998/3-ano/tree/main/2%C2%BAsemestre/CG)
-
-* [Cálculo de Programas](https://github.com/Demorales1998/3-ano/tree/main/2%C2%BAsemestre/PL)
+* [Cálculo de Programas](https://github.com/luis1ribeiro/LEI-MIEI/tree/main/2nd%20year/CP)

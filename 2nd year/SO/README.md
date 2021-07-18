@@ -1,5 +1,0 @@
-# Sistemas Operativos
-
-**Studying SO**
-
-
