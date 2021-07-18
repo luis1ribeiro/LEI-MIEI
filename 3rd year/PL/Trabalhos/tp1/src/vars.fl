@@ -1,0 +1,50 @@
+%option noyywrap yylineno prefix="vars"
+
+%x META VALUE SUBS TF
+%{
+  #include <stdio.h>
+  #include <string.h>
+  #include <glib.h>
+
+  extern char* name;
+  GHashTable* metadata;
+  char *key,*value;
+
+  GHashTable* initializeHash();
+  void addToTable(char* k, char*v);
+  char* getValue(char* k);
+%}
+
+%%
+
+<*>\{%/[a-zA-Z0-9_]+%\}     {BEGIN SUBS;}
+^===[ ]meta                 {initializeHash();BEGIN META;}
+<SUBS>{
+[a-zA-Z0-9_]+/%\}           {printf(getValue(yytext));}
+%\}                         {BEGIN TF;}
+}
+<META>{
+#[^\n]+                     {;}                   // comentario nos metadados
+^[a-zA-Z0-9_]+/:[  ]        {key=strdup(yytext);BEGIN VALUE;}
+^===[ ]tree                 {ECHO;BEGIN TF;}
+.|\n                        {;}
+}
+<VALUE>[^\n]*               {value=strdup(yytext+2);addToTable(key,value);BEGIN META;}
+
+
+
+%%
+
+GHashTable* initializeHash (){
+  metadata = g_hash_table_new(g_str_hash,g_str_equal);
+  addToTable("name",name);
+  return metadata;
+}
+
+void addToTable(char* k, char* v){
+  g_hash_table_insert(metadata,k,v);
+}
+
+char* getValue(char* k){
+  return g_hash_table_lookup(metadata,k);
+}

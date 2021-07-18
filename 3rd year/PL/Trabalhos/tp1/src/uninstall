@@ -1,0 +1,4 @@
+#!/bin/bash
+
+make clean
+sudo rm /usr/local/bin/mkfromtemplate

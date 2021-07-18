@@ -1,0 +1,18 @@
+ 2089  for a in {1..100000}; do echo $RANDOM; done > file
+ 2090  wc file
+ 2095  awk '    {a[$0]++} END {for(e in a)print a[e],e}' file | more
+ 2097  awk 'a[$0] >0 {printf "*"}  {a[$0]++} 1' file
+ 2098  vi limpo...
+ 2099  awk 'a[$0] >0 {printf "*"}  {a[$0]++; print}' file
+ 2102  awk '!a[$0]  {print ; a[$0]++}' file | wc
+ 2115  chmod 755 pjoin
+ 2116  pjoin tp1 tp2
+ 2120  sed 's/1/3/' tp1 > tp3
+ 2121  sed 's/1/4/' tp1 > tp4
+ 2123  pjoin tp*
+ 2125  awk '/Rui/' tp*
+ 2126  awk '/R.*i/' tp*
+ 2127  awk '/tp1.*14/' tp*
+ 2128  awk '/tp1.*14/' tp*
+ 2133  history 50 > h
+

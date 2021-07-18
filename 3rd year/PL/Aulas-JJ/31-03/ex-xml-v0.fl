@@ -1,0 +1,40 @@
+%{
+#include "y.tab.h"
+void yyerror(char* s);
+%}
+%option noyywrap  yylineno
+%%
+
+\<!--.*--\>         {}   // comentários
+
+[<>]                return(yytext[0]); 
+\<\/                return BB;
+
+[^<>/]+/\>          return TAG;
+[^<>]+/\<           return TXT;
+
+[ \t\n]+            {}            // só espaços finais (ignorar)
+[^<>]+              return TXT;   // só para TXT final...
+
+.                   yyerror("inválido");
+
+%%
+/*  <x></x>\nEOF
+//        > TXT="\n" EOF
+
+    <x>batatas</x> cebolas EOF
+    (<)(x=TAG)(>)(batatas=TXT)(</=BB)(x=TAG)(!!!! cebolas =TXT)
+    <x>batatas</x>\nEOF
+
+//    <!--  ....  -->
+//   simbolos expeciais '<' '>'
+//   aagrupamento de simbolo especiais ∪ pala. reservadas "</"
+//   TAG  não [<>/ \t\n]
+//   TXT  não [<>] 
+//      h1         ...TAG TXT  como disnguir TAG TXT  <h1>h1</h1>
+//           a)     %x text entreMM
+//                      h1 entreMM → TAG
+                        h1 text    → TXT
+             b)     usando lookahead     h1/> TAG            h1/< → TXT
+
+*/

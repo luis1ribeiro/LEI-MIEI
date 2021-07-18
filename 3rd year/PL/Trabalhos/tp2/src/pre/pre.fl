@@ -1,0 +1,26 @@
+%{
+#include <math.h>
+#include <stdio.h>
+%}
+%option noyywrap  yylineno
+%x EXE
+
+hifen \-[ ]
+
+%%
+__BEGIN__	                                                                  {ECHO;BEGIN EXE;}
+<EXE>{
+	^\-																		  {printf(" -"); }
+	^[  ]{2,}/[^\-\n]*[\-][ ]{1,}                               			  {printf(" ");}
+	^[^ ]/([^\-\n]+|[a-zA-Z]+\-[a-zA-Z]+)[\-][ ]{1,}[^ ]					  {printf(" "); ECHO;}
+	^[ ]{0,4}\-[ ]{2,}/[a-zA-Z]												  {printf(" - ");}
+	_[^_]*_                                                                    {;}
+}
+%%
+
+int main()
+{
+  yylex();
+  return 0;
+}
+

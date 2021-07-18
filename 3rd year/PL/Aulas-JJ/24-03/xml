@@ -1,0 +1,39 @@
+NOMES:
+
+elem           <x> ...... </x>
+abreelem       <x>
+tag             x
+fechaelem      </x>
+txt
+
+EXEMPLOS
+<x> txt <y> txt </y> txt <z> txtx </z>  </x>
+<x></x>
+<x> t1 </x> <x> t2 </x>  FIXME: invalido
+<x> <y></y> <z></z> <x>
+<x> <y><z></z> </y> <x>
+
+interior   txt elementos ...
+
+
+T={ < </ > TAG TXT }
+
+xml :  elem
+
+elem: abrelem filhos fechaelem
+
+filhos : TXT filhos                            // (TXT | elem)*
+       | elem filhos
+       |
+       ;
+
+abrelem: '<' TAG '>'
+
+fechaelem: '</' TAG '>'
+
+
+
+
+
+
+elems : elem elems | ;

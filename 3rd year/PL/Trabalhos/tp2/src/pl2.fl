@@ -1,0 +1,34 @@
+%{
+#include "y.tab.h"
+void yyerror(char* s);
+int fst;
+%}
+%option noyywrap  yylineno
+
+%x CORPO
+
+acentos    \xc3[\x80-\xbf]
+letra      [a-zA-Z]|{acentos}
+palavra    {letra}+(-{letra}+|'{letra}+|\+{letra}+)*
+
+%%
+
+__BEGIN__                         {BEGIN CORPO;fst=1;}
+<CORPO>{
+    ^{letra}/\n                   {fst=0;return LETRA;}
+    \n/{letra}\n                  {if (fst); else return NEWLINE;}
+    {palavra}|\/                  {yylval.s = strdup(yytext);return PAL;}
+    \n[ ]{10,}/{palavra}          {;}
+    -\n[ ]{10,}/{palavra}         {return TRACO;}
+    [ ]{3,}/({palavra}|\(|\")     {return ENSEP;}
+    [ ]                           {;}
+    \n[ ]{0,10}/({palavra}|-|\()  {return NEWLINE;}
+    [\(\),;\:\-\+]                {return yytext[0];}
+    .                             {yyerror("Caracter Inválido");}
+    \n                            {;}
+    <<EOF>>                       {BEGIN 0; return NEWLINE;}
+}
+.|\n                              {;}
+
+%%
+

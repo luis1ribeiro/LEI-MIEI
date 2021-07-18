@@ -1,0 +1,10 @@
+int a;
+string b;
+
+a = ler;
+b = ler;
+
+escrever a+a;
+
+escrever b;
+

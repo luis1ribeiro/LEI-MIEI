@@ -1,0 +1,32 @@
+pushi 0
+pushi 0
+start
+read
+atoi
+storeg 0
+read
+atoi
+storeg 1
+
+//if (a > b)
+pushg 0
+pushg 1
+sup
+jz else
+
+// then
+pushg 0 // a
+writei  //escrevo o a
+jump fim
+
+//else
+else:
+  pushg 1 // b
+  writei //escrevo o b
+
+fim:
+  pushs "\n"
+  writes
+  stop
+
+// tpc ciclo elefantes

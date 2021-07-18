@@ -1,0 +1,148 @@
+%option noyywrap yylineno prefix="tmpl"
+
+%x META TREE PROF FILES
+%{
+#include <stdio.h>
+#include <string.h>
+#include <glib.h>
+
+typedef struct node{
+    char* descricao;
+    int file;
+}Node;
+
+GNode *dirs,*parent;
+int prof=0,nprof=0;
+char *file,*pwd;
+
+void insertFile(char* nome);
+void insertDir(char* nome);
+void makeTree();
+void initializeTree();
+int writef (char* s, char* f);
+%}
+
+%%
+
+^===[  ]tree                        {initializeTree();BEGIN TREE;}
+<TREE>{
+[^\n\\\*\?\<\>\|\/]+\/$             {insertDir(yytext);BEGIN PROF;}
+[^\n\\\*\?\<\>\|\/]+                {insertFile(yytext);BEGIN PROF;}
+.|\n                                {;}
+}
+<PROF>{
+^===[  ][^\n]+                      {makeTree();file=strdup(yytext+4);BEGIN FILES;}
+^-+[  ]                             {nprof=strlen(yytext)-1;BEGIN TREE;}
+.|\n                                {;}
+}
+<FILES>{
+^===[ ][^\n]+                       {file=strdup(yytext+4);}
+^[^\n]*                             {writef(yytext,file);}
+^\n                                 {writef("",file);}
+.|\n                                {;}
+}
+.|\n                                {;}
+
+%%
+
+GNode* addToTree(char* nome, int file, GNode* parent){
+    Node* new = malloc(sizeof(struct node));
+    new->descricao = strdup(nome);
+    new->file = file;
+    GNode* node;
+    if (parent==NULL){
+        node = g_node_new(new);
+        g_node_append(dirs,node);
+    }
+    else{
+        node = g_node_new(new);
+        g_node_append(parent,node);
+    }
+    return node;
+}
+
+void insertDir(char* nome){
+    while(nprof!=prof){
+        parent=parent->parent;
+        prof--;
+    }
+    parent=addToTree(nome,0,parent);
+    prof++;
+    nprof=0;
+}
+
+void insertFile(char* nome){
+    while(nprof!=prof){
+        parent=parent->parent;
+        prof--;
+    }
+    addToTree(nome,1,parent);
+    nprof=0;
+}
+
+void initializeTree(){
+    dirs = g_node_new(NULL);
+}
+
+void transformTree (GNode* dir,char* path){
+    if (dir!=NULL){
+        GNode* child = g_node_first_child(dir);
+        char command [1024];
+        while(child){
+            Node* dados = child->data;
+            if (dados->file) sprintf(command,"touch %s%s",path,dados->descricao);
+            else sprintf(command,"mkdir %s%s",path,dados->descricao);
+            system(command);
+            if (!dados->file){
+                sprintf(command,"%s%s",path,dados->descricao);
+                transformTree(child,command);
+            }
+            child=child->next;
+        }
+    }
+}
+
+
+void makeTree(){
+    char pwd [64];
+    getcwd(pwd,sizeof(pwd));
+    strcat(pwd,"/");
+    transformTree(dirs,pwd);
+}
+
+int getFilePath (GNode* dir,char* f,char* path){
+    if (dir!=NULL){
+        GNode* child = g_node_first_child(dir);
+        while(child){
+            Node* dados = child->data;
+            if (dados->file){
+                if (strcmp(dados->descricao,f)==0){
+                    strcat(path,f);
+                    return 1;
+                }
+            }
+            else{
+                strcat(path,dados->descricao);
+                if (getFilePath(child,f,path)==1) return 1;
+                else{
+                    int nc = strlen(path)-strlen(dados->descricao);
+                    path[nc]='\0';
+                }
+            }
+            child=child->next;
+        }
+    }
+    return 0;
+}
+
+int writef (char* s, char* f){
+    char path [1024];
+    getcwd(path,sizeof(path));
+    strcat(path,"/");
+    if (getFilePath(dirs,f,path)==1){
+        FILE *f = fopen(path,"a");
+        fprintf(f,"%s\n",s);
+        fclose(f);
+    }
+    return 0;
+}

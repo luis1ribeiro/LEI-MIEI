@@ -1,0 +1,81 @@
+1 S â†’ exp .
+
+2 exp â†’ INT
+3     | ( fun )
+
+4 fun â†’ * lista
+5     | + lista
+
+6 lista â†’
+7      | exp lista
+
+==
+( + 3 4 )
+( fun )
+  + lista
+    3
+    exp
+      4
+      exp
+      exp lista
+==
+O que Ã© que isto pode ser?
+estado de possiveis situaÃ§Ãµes
+==
+Rec Bottom UP (autÃ³mato LR0)
+==
+1 S â†’ exp $
+
+2 exp â†’ INT
+3     | ( fun )
+
+4 fun â†’ * lista
+5     | + lista
+
+6 lista â†’
+7      | exp lista
+==
+|1  S â†’ . exp $      |  INT â†’ 3
+-                    |  (   â†’ 4
+|   exp â†’ . INT      |  exp â†’ 2
+|   exp â†’ . ( fun )  |
+==
+|2  S â†’ exp . $      |  $ â†’ reconhecimento
+==
+|3  exp â†’ INT .      ||  RedP2
+==
+|4  exp â†’ ( . fun )  |  fun â†’ 5
+-                    |  *   â†’ 6
+|   fun â†’ . * lista  |  +   â†’ 7
+|   fun â†’ . + lista  |
+==
+|5  exp â†’ ( fun . )  |  )  â†’ 8
+==
+|6  fun â†’ * . lista     | lista â†’ 9
+-                       |
+|   lista â†’ .           || RedP6
+|   lista â†’ . exp Lista | exp â†’ 10
+|   exp â†’ . INT         | INT â†’ 3
+|   exp â†’ . ( fun )     | ( â†’ 4
+==
+|7  fun â†’ + . lista     | lista â†’ 11
+-                       |
+|   lista â†’ .          || RedP6
+|   lista â†’ . exp Lista | exp â†’ 10
+|   exp â†’ . INT         | INT â†’ 3
+|   exp â†’ . ( fun )     | ( â†’ 4
+==
+|8  exp â†’ ( fun ) .     || RedP3
+==
+|9  fun â†’ * lista .     || RedP4
+==
+| 10 lista â†’  exp . Lista | Lista â†’ 12
+-
+|   lista â†’ .           || RedP6
+|   lista â†’ . exp Lista  | exp â†’ 10
+==
+|11  fun â†’ + lista .     || RedP5
+==
+|12 lista â†’  exp Lista . || RedP7
+===
+

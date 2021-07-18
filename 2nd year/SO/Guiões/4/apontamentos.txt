@@ -1,0 +1,7 @@
+  Ao redirecionar o stdout para um ficheiro,
+o tamanho do buffer de memória passa de uma linha para o tamanho utilizado
+pelo sistema de ficheiros (tipicamente 4KB ou 8KB).
+Funções como a printf() deixam por isso de fazer buffering à linha.
+
+  \-> A função fflush(stdout) permite forçar a persistência dos dados em buffer
+  \-> A função setbuf(stdout, NULL) permite desativar o buffer de memória

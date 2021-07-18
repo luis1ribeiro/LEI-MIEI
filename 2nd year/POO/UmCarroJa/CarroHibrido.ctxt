@@ -1,0 +1,15 @@
+#BlueJ class context
+comment0.target=CarroHibrido
+comment1.params=
+comment1.target=CarroHibrido()
+comment2.params=h
+comment2.target=CarroHibrido(CarroHibrido)
+comment3.params=marca\ matricula\ nif\ velomed\ precokm\ consumokm\ posicao\ autonomiaMax\ autonomia
+comment3.target=CarroHibrido(java.lang.String,\ java.lang.String,\ int,\ double,\ double,\ double,\ Ponto,\ double,\ double)
+comment4.params=
+comment4.target=CarroHibrido\ clone()
+comment5.params=obj
+comment5.target=boolean\ equals(java.lang.Object)
+comment6.params=
+comment6.target=java.lang.String\ toString()
+numComments=7

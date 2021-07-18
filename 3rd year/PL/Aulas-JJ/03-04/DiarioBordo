@@ -1,0 +1,248 @@
+... processadores gerados por: flex + yacc   (bison)
+
+GramÃ¡tica: como fazer reconhecedores?
+    yacc  Ã© um gera-reconhecedor(gram) â†’ programa
+
+Reconhecedores:
+   Top-Down   -- rec(axiomo â†’ â†’ folhas
+       Recursivo Descendente
+       LL1 ... LLn (dirigido por tabela)
+
+   Bottom-Up  -- terminais â†’ agrupando â†’ axioma
+       LR0
+       LaLR1
+
+   Left-Corner --
+   ...
+
+1. Recursivo descendente
+
+1.a Exemplo GramÃ¡tico JSON simplificado
+   [ "abc"
+     [ "def"
+       { "a": "b"
+         "c" :[]
+         "d" : 34
+       }
+     ]
+   ]
+
+1.b GramÃ¡tica:
+
+   T= {  [ ] { } : INT STR  }
+
+   j â†’ lista
+     | dic
+     | INT
+     | STR
+   lista â†’ [ elems ]
+   dic â†’ { pares }
+   elems â†’ j elems
+         |
+   pares â†’ par pares
+         |
+   par â†’ INT : j
+     | STR : j
+
+1.c) Rec. Descendente correspondente:
+
+fun rec_pares {
+   if SEG âˆˆ { INT, STR }:    // lookahead ( pares â†’ par pares)
+       rec_j
+       rec_elems
+   elsif SEG âˆˆ { '}' }:      // lookahead ( pares â†’ )
+       skip
+   else:
+       FATAL-ERROr
+}
+
+
+fun rec_elems {
+   if SEG âˆˆ {'[','{',INT, STR }:    // lookahead ( elems â†’ j elems)
+       rec_j
+       rec_elems
+   elsif SEG âˆˆ {']'}:               // lookahead ( elems â†’ )
+       skip
+   else:
+       FATAL-ERROr
+}
+
+fun rec_lista {
+   if SEG = '[':
+       recterm([ )
+       rec_elems
+       recterm(] )
+   else:
+       FATAL-ERROR
+}
+
+fun rec_j {
+   if    SEG=INT:
+       recterm(INT )
+   elsif SEG=STR:
+       recterm(STR )
+   elsif SEG= '[':
+       rec_lista
+   elsif SEG= '{':
+       rec_dic
+   else:
+       FATAL-ERROR
+}
+
+fun recterm(t){
+   if SEG = t:
+       SEG = yylex()  // avanÃ§ar...
+   else:
+       FATAL-ERROr
+}
+
+fun rec_par {
+   if    SEG=INT:
+       recterm(INT )
+       recterm(: )
+       rec_j
+   elsif SEG=STR:
+       recterm(STR )
+       recterm(: )
+       rec_j
+   else:
+       FATAL-ERROR
+}
+
+main : rec_j()
+
+FIXME: como calcular os lookahead (A â†’ b...) ?
+---------------------------------------------------------------------
+Exer: '"a" : []'   âˆˆ Lpar ?
+par => STR : elem
+    => STR : lista
+    => STR : [ elems ]
+    => STR : []
+
+---------------------------------------------------------------------
+TPC: completar rec. desc.
+---------------------------------------------------------------------
+...antes da ordem do dia
+  exemplos com: https://https://regex101.com
+  2139  perl -pe 's/ *\d+//; s/(.*), (.*)/$2 $1=.../' exemplo.txt
+
+---------------------------------------------------------------------
+1.d) RD com semÃ¢ntica -- somar os INT que aparecem num JSON
+
+   j â†’ lista            { $1 }
+     | dic              { $1 }
+     | INT              { $1 }
+     | STR              { 0 }
+   lista â†’ [ elems ]    { $2 }
+   dic â†’ { pares }      { $2 }
+   elems â†’ j elems      { $1 + $2 }
+         |              { 0 }
+   pares â†’ par pares    { $1 + $2 }
+         |              { 0 }
+   par â†’ INT : j        { $1 + $3}
+     | STR : j          { $3}
+
+fun rec_pares {
+   if SEG âˆˆ { INT, STR }:    // lookahead ( pares â†’ par pares)
+       v1 = rec_par
+       v2 = rec_pares
+       return v1 + v2
+   elsif SEG âˆˆ { '}' }:      // lookahead ( pares â†’ )
+       return 0
+   else:
+       FATAL-ERROr
+}
+
+fun rec_elems {
+   if SEG âˆˆ {'[','{',INT, STR }:    // lookahead ( elems â†’ j elems)
+       v1 = rec_j
+       v1 = rec_elems
+       return v1 + v2
+   elsif SEG âˆˆ {']'}:               // lookahead ( elems â†’ )
+       return 0
+   else:
+       FATAL-ERROr
+}
+
+fun rec_lista {
+   if SEG = '[':
+            recterm([ )
+       v2 = rec_elems
+            recterm(] )
+       return 0
+   else:
+       FATAL-ERROR
+}
+
+fun rec_j {
+   if    SEG=INT:
+       v1 = recterm(INT )
+       return v1
+   elsif SEG=STR:
+       v1 = recterm(STR )
+       return 0
+   elsif SEG= '[':
+       v1 = rec_lista
+       return v1
+   elsif SEG= '{':
+       v1 = rec_dic
+       return v1
+   else:
+       FATAL-ERROR
+}
+
+fun recterm(t){
+   if SEG = t:
+       SEG = yylex()  // avanÃ§ar...
+       return yylval  // ajustar ... yytext
+   else:
+       FATAL-ERROr
+}
+
+fun rec_par {
+   if    SEG=INT:
+       v1 = recterm(INT )
+       v2 = recterm(: )
+       v3 = rec_j
+       return v1+v3
+   elsif SEG=STR:
+       v1 = recterm(STR )
+       v2 = recterm(: )
+       v3 = rec_j
+       return v3
+   else:
+       FATAL-ERROR
+}
+
+---------------------------------------------------------------------
+Nova versÃ£o: JSON em que os elems e pares sÃ£o separados por ","
+
+                                           lookahead
+   j â†’ lista            { $1 }              [
+     | dic              { $1 }              {
+     | INT              { $1 }              INT
+     | STR              { 0 }               STR
+
+   lista â†’ [ elems ]    { $2 }              [     // conflito: por onde seguir?
+         | [ ]          { $2 }              [     // conflito
+
+   dic â†’ { pares }      { $2 }              {
+
+   elems â†’ j , elems    { $1 + $2 }         [ { INT STR     // conflito
+         | j            { 0 }               [ { INT STR     // conflito
+
+   pares â†’ par , pares  { $1 + $2 }         .....
+         | par          { 0 }
+   par â†’ INT : j        { $1 + $3 }
+     | STR : j          { $3 }
+
+
+TPC: alterar as proc conflituosas (ex: lista â†’ ...)
+de modo aos seus lookahead serem dijuntos...
+
+---------------------------------------------------------------------
+SubmissÃ£o do TP1: https://natura.di.uminho.pt/jjbin/pl-2020-tp1
+
+
+
+

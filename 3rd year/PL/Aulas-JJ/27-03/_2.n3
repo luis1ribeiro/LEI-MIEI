@@ -1,0 +1,41 @@
+:Postal_de_Natal a :Postal,
+        owl:NamedIndividual ;
+    :Contexto "Postal a desejar um feliz natal" ;
+    :Enviado_por :John,
+        :Joshua,
+        :Lucia,
+        :Natasha ;
+    :Recebido_por :Ashley,
+        :Nancy,
+        :Paulo .
+
+
+:Postal_de_Natal a             :Postal.
+:Postal_de_Natal a             owl:NamedIndividual .
+:Postal_de_Natal :Contexto     "Postal a desejar um feliz natal" .
+:Postal_de_Natal :Enviado_por  :John.
+:Postal_de_Natal :Enviado_por  :Joshua.
+:Postal_de_Natal :Enviado_por  :Lucia.
+:Postal_de_Natal :Enviado_por  :Natasha .
+:Postal_de_Natal :Recebido_por :Ashley.
+:Postal_de_Natal :Recebido_por :Nancy.
+:Postal_de_Natal :Recebido_por :Paulo .
+
+
+gtriplos : sub gpares '.'
+gpares : pares
+       | gpares ';' pares
+       ;
+
+pares : rel comps
+
+comps : comp 
+      | comps ',' comp
+      ;
+
+comp : URI
+     | STR ;
+sub  : URI ;
+rel  : A
+     | URI ;
+

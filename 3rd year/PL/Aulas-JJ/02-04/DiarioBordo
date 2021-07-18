@@ -1,0 +1,100 @@
+processadores
+    gerados por: flex + yacc   (bison)
+
+GramÃ¡tica
+   como fazer gerdador?
+
+   gerador(gram) â†’ programa
+
+Geradores:
+   Top-Down   -- rec(axiomo â†’ â†’ folhas
+       Recursivo Descendente
+       LL1 ... LLn (dirigido por tabela)
+
+   Bottom-Up  -- terminais â†’ agrupando â†’ axioma
+       LR0
+       LaLR1
+
+   Left-Corner --
+   ...
+
+1. Recursivo descendente
+
+1.a GramÃ¡tico JSON
+   [ "abc"
+     [ "def"
+       { "a": "b"
+         "c" :[]
+         "d" : 34
+       }
+     ]
+   ]
+
+   T= {  [ ] { } , : INT STR  }
+
+   j â†’ lista | dic | INT | STR
+   lista â†’ [ elems ]
+   dic â†’ { pares }
+   elems â†’ j elems
+         |
+   pares â†’ par pares
+         |
+   par â†’ INT : j | STR : j
+
+fun recterm(t){
+   if SEG = t:
+       SEG = yylex()  // avanÃ§ar...
+}
+
+fun rec_elems {
+   if SEG âˆˆ {'[','{',INT, STR }:    // lookahead
+       rec_j
+       rec_elems
+   elsif SEG âˆˆ {']'}:
+
+   else:
+       FATAL-ERROr
+}
+
+fun rec_lista {
+   if SEG = '[':
+       recterm([ )
+       rec_elems
+       recterm(] )
+   else:
+       FATAL-ERROR
+}
+
+fun rec_par {
+   if    SEG=INT:
+       recterm(INT )
+       recterm(: )
+       rec_j
+   elsif SEG=STR:
+       recterm(STR )
+       recterm(: )
+       rec_j
+   else:
+       FATAL-ERROR
+}
+
+fun rec_j {
+   if    SEG=INT:
+       recterm(INT )
+   elsif SEG=STR:
+       recterm(STR )
+   elsif SEG= '[':
+       rec_lista
+   elsif SEG= '{':
+       rec_dic
+   else:
+       FATAL-ERROR
+}
+
+par => STR : elem
+    => STR : lista
+    => STR : [ elems ]
+    => STR : []
+
+TPC: completar rec. desc.
+

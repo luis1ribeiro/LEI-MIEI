@@ -1,0 +1,10 @@
+#BlueJ class context
+comment0.target=ClienteComparator
+comment0.text=\n\ Write\ a\ description\ of\ class\ clienteComparartor\ here.\n\n\ @author\ (your\ name)\n\ @version\ (a\ version\ number\ or\ a\ date)\n
+comment1.params=x
+comment1.target=ClienteComparator(int)
+comment1.text=\n\ Constructor\ for\ objects\ of\ class\ clienteComparartor\n
+comment2.params=c1\ c2
+comment2.target=int\ compare(Pessoa,\ Pessoa)
+comment2.text=\n\ An\ example\ of\ a\ method\ -\ replace\ this\ comment\ with\ your\ own\n\n\ @param\ \ y\ \ a\ sample\ parameter\ for\ a\ method\n\ @return\ \ \ \ the\ sum\ of\ x\ and\ y\n
+numComments=3

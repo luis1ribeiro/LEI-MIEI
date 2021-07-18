@@ -1,0 +1,18 @@
+=== meta
+
+author: Pedro
+email: pedro@gmail.com
+
+=== tree
+
+{%name%}/
+- meta
+- tree
+
+=== meta
+
+Consigo criar ficheiro meta {%author%}
+
+=== tree
+
+Também consigo criar ficheiro tree

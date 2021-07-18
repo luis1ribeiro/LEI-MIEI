@@ -1,0 +1,7 @@
+#BlueJ class context
+comment0.target=VeiculoComparator
+comment1.params=cli\ tipoComp
+comment1.target=VeiculoComparator(Ponto,\ int)
+comment2.params=v1\ v2
+comment2.target=int\ compare(Veiculo,\ Veiculo)
+numComments=3

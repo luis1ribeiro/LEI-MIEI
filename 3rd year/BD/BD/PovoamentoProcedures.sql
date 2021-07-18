@@ -1,0 +1,92 @@
+USE TestesClinicos;
+
+CALL inserirModalidade("Corrida de Estafeta");
+CALL inserirModalidade("Corrida de Obstaculos");
+CALL inserirModalidade("Corrida de Pista");
+CALL inserirModalidade("Salto");
+CALL inserirModalidade("Lançamento");
+
+CALL inserirCategoria("100 metros","Corrida de Estafeta");
+CALL inserirCategoria("200 metros","Corrida de Estafeta");
+CALL inserirCategoria("400 metros","Corrida de Estafeta");
+CALL inserirCategoria("800 metros","Corrida de Estafeta");
+CALL inserirCategoria("1000 metros","Corrida de Estafeta");
+CALL inserirCategoria("1500 metros","Corrida de Estafeta");
+CALL inserirCategoria("3000 metros","Corrida de Estafeta");
+CALL inserirCategoria("100 metros","Corrida de Obstaculos");
+CALL inserirCategoria("200 metros","Corrida de Obstaculos");
+CALL inserirCategoria("400 metros","Corrida de Obstaculos");
+CALL inserirCategoria("800 metros","Corrida de Obstaculos");
+CALL inserirCategoria("1000 metros","Corrida de Obstaculos");
+CALL inserirCategoria("1500 metros","Corrida de Obstaculos");
+CALL inserirCategoria("3000 metros","Corrida de Obstaculos");
+CALL inserirCategoria("100 metros","Corrida de Pista");
+CALL inserirCategoria("200 metros","Corrida de Pista");
+CALL inserirCategoria("400 metros","Corrida de Pista");
+CALL inserirCategoria("800 metros","Corrida de Pista");
+CALL inserirCategoria("1000 metros","Corrida de Pista");
+CALL inserirCategoria("1500 metros","Corrida de Pista");
+CALL inserirCategoria("3000 metros","Corrida de Pista");
+CALL inserirCategoria("Comprimento","Salto");
+CALL inserirCategoria("Altura","Salto");
+CALL inserirCategoria("Dardo","Lançamento");
+CALL inserirCategoria("Martelo","Lançamento");
+CALL inserirCategoria("Peso","Lançamento");
+
+CALL inserirAtleta(1,"Pedro Rodrigues","1999-07-17","Porto","Portugal","Lama-Barcelos","933094013","Corrida de Pista","1000 metros");
+CALL inserirAtleta(2,"André Morais","1998-03-18","Boavista","Portugal","Esposende","967891244","Salto","Comprimento");
+CALL inserirAtleta(3,"Luis Ribeiro","1999-12-08","Benfica","Portugal","Taipas-Guimaraes","927451674","Lançamento","Martelo");
+CALL inserirAtleta(4,"José Silva","1999-03-12","ATC","Portugal","Ronfe","917451774","Corrida de Obstaculos","800 metros");
+
+CALL inserirEspecialidade("Cardiologia",10.99);
+CALL inserirEspecialidade("Anti-Doping",20.99);
+CALL inserirEspecialidade("Osteopatia",30.99);
+CALL inserirEspecialidade("Dentista",50);
+
+CALL inserirTurno("Manha","06:00","14:00");
+CALL inserirTurno("Tarde","14:00","22:00");
+
+CALL inserirMedico(1,"Dr Antonio","Cardiologia","Manha");
+CALL inserirMedico(2,"Dra Luisa","Cardiologia","Tarde");
+CALL inserirMedico(3,"Dr Carlos","Cardiologia","Tarde");
+CALL inserirMedico(4,"Dra Fatima","Cardiologia","Manha");
+CALL inserirMedico(5,"Dr Afonso","Anti-Doping","Manha");
+CALL inserirMedico(6,"Dra Amelia","Osteopatia","Tarde");
+CALL inserirMedico(7,"Dr Gonçalo","Osteopatia","Tarde");
+CALL inserirMedico(8,"Dra Filipa","Anti-Doping","Manha");
+CALL inserirMedico(9,"Dr Guilherme","Dentista","Manha");
+CALL inserirMedico(10,"Dra Alice","Dentista","Tarde");
+CALL inserirMedico(11,"Dr Francisco","Dentista","Tarde");
+CALL inserirMedico(12,"Dra Elfrida","Dentista","Tarde");
+
+CALL agendarTeste("2020-02-03 14:00:00","Osteopatia",1);
+CALL agendarTeste("2020-02-03 09:00:00","Cardiologia",1);
+CALL agendarTeste("2020-02-03 08:00:00","Anti-Doping",1);
+CALL agendarTeste("2020-02-03 15:00:00","Dentista",1);
+CALL agendarTeste("2020-02-04 14:00:00","Osteopatia",2);
+CALL agendarTeste("2020-02-04 09:00:00","Cardiologia",2);
+CALL agendarTeste("2020-02-04 08:00:00","Anti-Doping",2);
+CALL agendarTeste("2020-02-04 15:00:00","Dentista",2);
+CALL agendarTeste("2020-02-05 14:00:00","Osteopatia",3);
+CALL agendarTeste("2020-02-05 09:00:00","Cardiologia",3);
+CALL agendarTeste("2020-02-05 08:00:00","Anti-Doping",3);
+CALL agendarTeste("2020-02-05 15:00:00","Dentista",3);
+CALL agendarTeste("2020-02-06 14:00:00","Osteopatia",4);
+CALL agendarTeste("2020-02-06 09:00:00","Cardiologia",4);
+CALL agendarTeste("2020-02-06 08:00:00","Anti-Doping",4);
+CALL agendarTeste("2020-02-06 15:00:00","Dentista",4);
+
+CALL concluirTeste(1,"Aprovado");
+CALL concluirTeste(2,"Aprovado");
+CALL concluirTeste(3,"Aprovado");
+CALL concluirTeste(4,"Aprovado");
+CALL concluirTeste(5,"Reprovado");
+CALL concluirTeste(6,"Aprovado");
+CALL concluirTeste(7,"Aprovado");
+CALL concluirTeste(8,"Aprovado");
+CALL concluirTeste(9,"Aprovado");
+CALL concluirTeste(10,"Aprovado");
+CALL concluirTeste(11,"Aprovado");
+CALL concluirTeste(12,"Reprovado");
+CALL concluirTeste(14,"Aprovado");
+CALL concluirTeste(15,"Aprovado");

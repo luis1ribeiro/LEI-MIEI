@@ -1,0 +1,24 @@
+#COmandos ?
+mkdir dir1
+cd dir1
+   touch file1
+   touch file2
+   mkdir dir2
+   cd dir2
+      touch file3
+      touch file4
+   cd ..
+   mkdir dir3
+   cd dir3
+   cd ..
+cd ..
+
+
+#dir1(
+#   file1,
+#   file2,
+#   dir2(file3,
+#        file3),
+#   dir3()
+#)
+

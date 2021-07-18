@@ -1,0 +1,61 @@
+
+1 S â†’ exp .
+
+2 exp â†’ INT
+3     | ( fun )
+
+4 fun â†’ * lista
+5     | + lista
+
+6 lista â†’
+7      | exp lista
+
+=== Simbolos anulÃ¡veis
+anulavel = { lista }
+
+=== First
+fi(S) = fi(exp) = { INT ( }
+fi(lista) = fi(exp) = { INT ( }
+fi(exp) = { INT ( }
+fi(fun) = { + * }
+=== Follows
+
+fo(exp)   = (1) { . } âˆª (7) fi(lista) âˆª fo(lista)
+fo(lista) = (4) fo(fun) âˆª (5) fo(fun) âˆª (7) fo(lista)
+fo(fun)   = (3) { ) }
+
+Calculo do ponto fixo :
+fo(exp)   = {}
+fo(lista) = {}
+fo(fun)   = {}
+
+fo(exp)   = {INT ( . }
+fo(lista) = {}
+fo(fun)   = { ) }
+
+fo(exp)   = {INT ( . }
+fo(lista) = { ) }
+fo(fun)   = { ) }
+
+
+fo(exp)   = {INT ( . ) }
+fo(lista) = { ) }
+fo(fun)   = { ) }
+
+=== Lookaheads
+
+1  loo(S â†’ exp .) = fi(exp .) = fi(exp) = {INT ( }
+
+2  loo(exp â†’ INT ) = { INT}
+3  loo(exp â†’ ( fun ) ) = { ( }
+
+4  loo(fun â†’ * lista)=fi(* lista) = {*}
+5  loo(fun â†’ + lista)=fi(+ lista) = {+}
+
+6  loo(lista â†’ epsilon) = fi(epsilon) âˆª fo(lista) = {} âˆª { ) } = {)}
+7  loo(lista â†’ exp lista)=fi(exp lista) = fi(exp) = {INT ( }
+
+===
+TPC: calcular Lookaheads de outras gramÃ¡ticas
+
+

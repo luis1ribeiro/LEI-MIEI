@@ -1,0 +1,17 @@
+#!/usr/bin/gawk -f
+
+BEGIN { FS = "::";
+        n = "https://natura.di.uminho.pt/~jj/ARQEVO"
+      }
+
+!p[$1] { printf "<h1><a href='index.html'>%s</a></h1>\n", $1 > $1 ".html" ;
+         printf "<li><a href='%s.html'>%s</a></li>",$1,$1 > "index.html" ;
+         p[$1] = 1
+       }
+
+
+       { printf "<li><a href='%s/%s'>%s</a></li>\n",n,$5,$3 > $1 ".html" }
+
+
+# Alentejo::Santa VitÃ³ria, Beja::Disse a laranja ao limÃ£o::Jorge Montes Caranova (viola campaniÃ§a)::d1/evo001.mp3::1:02::
+

@@ -1,0 +1,59 @@
+%{
+#include "y.tab.h"
+void yyerror(char* s);
+%}
+%option noyywrap  yylineno
+%x texto entreMM
+
+ASPAS    (["][^"\n]*["]|['][^'\n]*['])
+
+%%
+
+\<!--.*--\>            {}   // comentários
+<*>[<]                 BEGIN entreMM; return yytext[0];
+<*>[>]                 BEGIN texto;   return yytext[0];
+
+<*>\<\/                BEGIN entreMM; return AB;
+<*>\/\>                BEGIN texto;   return BF;
+
+<entreMM>{
+    [ \t\n]            {}            // só espaços finais (ignorar)
+    [a-zA-Z:\-_0-9]+   yylval.s = strdup(yytext); return ID;
+    {ASPAS}            yylval.s = strdup(yytext); return STR;
+    [=]                return yytext[0];
+}
+
+<texto>{
+   [^<>]+/\<           yylval.s = strdup(yytext); return TXT;
+   [ \t\n]+            {}            // só espaços finais (ignorar)
+   [^<>]+              yylval.s = strdup(yytext); return TXT;   // só para TXT final...(erro)
+   \<!--.*--\>         {}   // comentários
+}
+
+<*>.                   yyerror("inválido");
+
+%%
+/*  <x></x>\nEOF
+//        > TXT="\n" EOF
+
+    <x>batatas</x> cebolas EOF
+    (<)(x=TAG)(>)(batatas=TXT)(</=BB)(x=TAG)(!!!! cebolas =TXT)
+    <x>batatas</x>\nEOF
+
+//    <!--  ....  -->
+//   simbolos expeciais '<' '>'
+//   aagrupamento de simbolo especiais ∪ pala. reservadas "</"
+//   TAG  não [<>/ \t\n]
+//   TXT  não [<>] 
+//      h1         ...TAG TXT  como disnguir TAG TXT  <h1>h1</h1>
+//           a)     %x text entreMM
+//                      h1 entreMM → TAG
+                        h1 text    → TXT
+             b)     usando lookahead     h1/> TAG            h1/< → TXT
+
+V1:   atributos  
+   ID  STR
+     <a href="x.html">batatas</a>
+     (<)(a=ID) (href=ID)(=)("x.html"=STR)(>)...
+     
+*/

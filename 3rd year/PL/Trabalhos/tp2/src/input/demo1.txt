@@ -1,0 +1,27 @@
+__BEGIN__
+
+
+A
+ADP (automatic data processing)   processamento (m) automático de
+                                   dados
+above par                         com ágio; acima da paridade
+acceptance:                       aceitação (f)
+ brand -                          aceitação (f) de uma marca
+advertising:
+
+    - agent             agente (m) de publicidade
+B
+budget:                          orçamento (m)
+ - appropriation                 verba ff) orçamentária
+budgeting:                       contabilidade (f) orçamentária
+ performance -                   controle (m) orçamentário de rendimen-
+                                 to
+
+c
+
+COBOL (comon business
+ oriented language)                 Cobol, linguagem (f) comum para
+                                     negócios
+s
+sales:
+ -   expansion effort   esforço (m) para aumentar vendas
